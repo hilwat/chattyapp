@@ -49,46 +49,6 @@ export default class App extends Component {
   	}
   }
 
-
-// sendMessage=(event) => {
-//   if(event.key ==='Enter') {
-//     var oldMessages = this.state.messages;
-//     oldMessages.push( 
-//       {
-//       username: this.state.currentUser.name,
-//       content: event.target.value,
-//       id: Math.random(),
-//       type:"incomingMessage"
-//       })
-//     this.setState({ 
-//       messages: oldMessages
-//     });
-//     this.socket.send(JSON.stringify(
-//       {username: this.state.currentUser.name, 
-//         content: event.target.value,
-//         type:"incomingMessage"}
-//       ));
-//     event.target.value = "";
-//   }
-// }
-
-// currentUserUpdate=(event)=>{
-//   if(event.key ==='Enter'){
-//   const oldUser = this.state.currentUser.name
-//   const newUser = event.target.value;
-//   console.log("user update", event.target.value)
-//   this.setState({ currentUser: { name: newUser }});
-//   this.socket.send(JSON.stringify(
-//     { 
-//       username: newUser, 
-//       previousname: oldUser,
-//       type:"incomingNotification"}
-//     ));
-// }
-// }
-
-  // Called after the component was rendered and it was attached to the
-  // DOM. This is a good place to make AJAX requests or setTimeout.
   componentDidMount() {
     console.log("componentDidMount <App />");
     setTimeout(() => {
@@ -106,13 +66,9 @@ export default class App extends Component {
       console.log('Connected 3001');
     }
 	
-	this.socket.onmessage = (socketData) => {
-		
-		let data = JSON.parse(socketData)
+	this.socket.onmessage = (event) => {
+		let data = JSON.parse(event.data)
 		console.log(data)
-    //   console.log(event);
-    //   const realtimeupdate = this.state.messages.concat(JSON.parse(event.data))
-    //   this.setState({messages: realtimeupdate});
       switch(data.type) {
 		case "incomingMessage":
 			var currentMessages = this.state.messages;
@@ -122,7 +78,12 @@ export default class App extends Component {
 		    });
           	break;
         case "incomingNotification":
-        	// handle incoming notification
+			var currentMessages = this.state.messages;
+			currentMessages.push(data);
+			this.setState({ 
+		  		messages: currentMessages, currentUser: { name: data.username }
+			});
+			
           break;
         default:
         	// show an error in the console if the message type is unknown
@@ -131,8 +92,6 @@ export default class App extends Component {
     }
   }
 
-  // Called any time the props or state changes. The JSX elements
-  // returned in this method will be rendered to the DOM.
   render() {
       return (
      <div>

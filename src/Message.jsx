@@ -13,8 +13,8 @@ class Message extends Component {
         )
         case "incomingNotification":
         return (
-            <div class="notification">
-            <span class="notification-content">Anonymous1 changed their name to {this.props.message.username}</span>
+            <div className="notification">
+            <span className="notification-content">{this.props.message.previousname} changed their name to {this.props.message.username}</span>
             </div>
             )
         }
