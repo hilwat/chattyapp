@@ -14,10 +14,15 @@ const server = express()
 
 // Create the WebSockets server
 const wss = new SocketServer({ server });
+const usersOnline= {
+	counter: 0,
+	type: "userupdate"
+ 	} ;
 
 wss.broadcast = function broadcast(data) {
 	wss.clients.forEach(function each(client) {
 	  if (client.readyState === webSocket.OPEN) {
+		console.log(data)
 		client.send(data);
 	  }
 	});
@@ -27,19 +32,36 @@ wss.broadcast = function broadcast(data) {
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
+	console.log('Client connected');
+	
+	if (ws) {
+		usersOnline.counter++
+		//const colour = generate colour function
+		//const create obj = tatel users colour
+		console.log(usersOnline.counter);
+	};
 
-  	console.log('Client connected');
-  
-	ws.on('message', data  => {
-		const message = JSON.parse(data);
-		const uniqueID  = uuidv4();
-		const formattedResponse = {
-			id: uniqueID, ...message
-		}
-		console.log(formattedResponse)
-    	wss.broadcast(JSON.stringify(formattedResponse));
-	})
-
+  wss.broadcast(JSON.stringify(usersOnline));
+	
+	ws.on('message', handleMessage)
 	// Set up a callback for when a client closes the socket. This usually means they closed their browser.
-	ws.on('close', () => console.log('Client disconnected'));
+	ws.on('close', handleClose)
 });
+
+const handleClose = () => {
+	console.log('Client disconnected');
+	usersOnline.counter--;
+	wss.broadcast(JSON.stringify(usersOnline));
+}
+
+const handleMessage = data  => {
+	const message = JSON.parse(data);
+	const uniqueID  = uuidv4();
+	const formattedResponse = {
+		id: uniqueID, ...message
+	}
+	console.log(formattedResponse)
+	wss.broadcast(JSON.stringify(formattedResponse));
+}
+
+Generate: 
