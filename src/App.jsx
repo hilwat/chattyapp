@@ -3,10 +3,8 @@ import ChatBar from "./ChatBar.jsx";
 import MessageList from "./MessageList.jsx";
 
 export default class App extends Component {
-  // Set initial state so the component is initially "loading"
   constructor(props) {
     super(props);
-    // this is the *only* time you should assign directly to state:
     this.state = {
       currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
@@ -20,9 +18,10 @@ export default class App extends Component {
           username: "Anonymous",
           content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
           id:2,
-          type:"incomingMessage"
+		  type:"incomingMessage"
         }
-      ]
+	  ],
+	  usersOnline: 0 
     }
   }
 
@@ -52,7 +51,6 @@ export default class App extends Component {
   componentDidMount() {
     console.log("componentDidMount <App />");
     setTimeout(() => {
-      console.log("Simulating incoming message");
       // Add a new message to the list of messages in the data store
       const newMessage = {id: 3, username: "Michelle", content: "Hello there!", type:"incomingMessage"};
       const messages = this.state.messages.concat(newMessage)
@@ -69,7 +67,7 @@ export default class App extends Component {
 	this.socket.onmessage = (event) => {
 		let data = JSON.parse(event.data)
 		console.log(data)
-      switch(data.type) {
+      	switch(data.type) {
 		case "incomingMessage":
 			var currentMessages = this.state.messages;
 		    currentMessages.push(data);
@@ -77,26 +75,27 @@ export default class App extends Component {
 		      messages: currentMessages
 		    });
           	break;
-        case "incomingNotification":
+    case "incomingNotification":
 			var currentMessages = this.state.messages;
 			currentMessages.push(data);
 			this.setState({ 
 		  		messages: currentMessages, currentUser: { name: data.username }
 			});
-			
-          break;
-        default:
-        	// show an error in the console if the message type is unknown
+		   break;
+		case "userupdate":
+			this.setState({usersOnline: data.counter});
+			break;
+		default:
         	throw new Error("Unknown event type " + data.type);
       }
-    }
   }
+}
 
   render() {
       return (
      <div>
        <nav className="navbar">
-        <a href="/" className="navbar-brand">Chatty</a>
+        <span href="/" className="navbar-brand">Chatty</span><span className="noOnline">Number Online: {this.state.usersOnline}</span>
       </nav>
       <MessageList messages={this.state.messages} />
       <ChatBar username={this.state.currentUser.name} sendMessage={this.sendMessage} updateUsername={this.updateUsername}/>
