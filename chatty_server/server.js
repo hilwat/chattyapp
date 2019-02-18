@@ -17,28 +17,25 @@ const wss = new SocketServer({ server });
 const usersOnline= {
 	counter: 0,
 	type: "userupdate"
- 	} ;
+ 	};
 
 wss.broadcast = function broadcast(data) {
 	wss.clients.forEach(function each(client) {
 	  if (client.readyState === webSocket.OPEN) {
-		console.log(data)
 		client.send(data);
 	  }
 	});
   };
 
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
+// Callback that will run when a client connects to the server
+// Assigned a socket, represented by the ws parameter in the callback.
 wss.on('connection', (ws) => {
 	console.log('Client connected');
 	
 	if (ws) {
 		usersOnline.counter++
-		//const colour = generate colour function
-		//const create obj = tatel users colour
-		console.log(usersOnline.counter);
+		//future add const colour = generate colour function
+		//future const create obj = with users colour
 	};
 
   wss.broadcast(JSON.stringify(usersOnline));
@@ -63,5 +60,3 @@ const handleMessage = data  => {
 	console.log(formattedResponse)
 	wss.broadcast(JSON.stringify(formattedResponse));
 }
-
-Generate: 

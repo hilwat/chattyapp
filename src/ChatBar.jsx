@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-
+// Chat bar component building the name entry and message 
 class ChatBar extends Component {
 
   render() {
