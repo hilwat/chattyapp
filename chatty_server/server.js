@@ -16,7 +16,7 @@ const server = express()
 const wss = new SocketServer({ server });
 const usersOnline= {
 	counter: 0,
-	type: "userupdate"
+	type: "userUpdate"
  	};
 
 wss.broadcast = function broadcast(data) {
@@ -57,6 +57,5 @@ const handleMessage = data  => {
 	const formattedResponse = {
 		id: uniqueID, ...message
 	}
-	console.log(formattedResponse)
 	wss.broadcast(JSON.stringify(formattedResponse));
 }

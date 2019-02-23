@@ -48,6 +48,7 @@ body {
 }
 
 .message.system {
+	color: tomato;
   font-style: italic;
   padding: 5px 20px;
 }
@@ -95,4 +96,11 @@ body {
 	display:block;
 	float: right;
 	line-height: 60px;
+}
+
+.notification-content {
+	display: flex;
+	padding: 5px 20px;
+	font-style: italic;
+	color: tomato;
 }

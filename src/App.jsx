@@ -6,7 +6,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: "Anonymous"}, 
       messages: [
         {
           username: "Bob",
@@ -72,21 +72,21 @@ export default class App extends Component {
 			var currentMessages = this.state.messages;
 		    currentMessages.push(data);
 		    this.setState({ 
-		      messages: currentMessages
+		    messages: currentMessages
 		    });
-          	break;
+      break;
     case "incomingNotification":
 			var currentMessages = this.state.messages;
 			currentMessages.push(data);
 			this.setState({ 
-		  		messages: currentMessages, currentUser: { name: data.username }
+		  	messages: currentMessages, currentUser: { name: data.username }
 			});
-		   break;
-		case "userupdate":
+		  break;
+		case "userUpdate":
 			this.setState({usersOnline: data.counter});
 			break;
 		default:
-        	throw new Error("Unknown event type " + data.type);
+        throw new Error("Unknown event type " + data.type);
       }
   }
 }
