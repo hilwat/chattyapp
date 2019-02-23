@@ -15,10 +15,10 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 const usersOnline= {
-	counter: 0,
+	counter: wss.clients.size,
 	type: "userUpdate"
  	};
-
+	 
 wss.broadcast = function broadcast(data) {
 	wss.clients.forEach(function each(client) {
 	  if (client.readyState === webSocket.OPEN) {
