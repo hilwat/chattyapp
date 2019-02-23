@@ -20,12 +20,6 @@ ChattyApp has features that are similar to slack where messages can be sent and 
 3. Start `npm start` command for the server.js and also `node server.js` within the chatty_server folder.
 4. Go to <http://localhost:3000/> in your browser.
 
-1️⃣ Install all dependencies (using `npm install` command).
-
-2️⃣ Run the development web server using the `node express_server.js` command simply type `npm run local` volià!
-
-3️⃣ Go to localhost `localhost:8080`
-
 Here you are able to:
 
 ✅ Change your name and then click enter and the update will be posted across users
