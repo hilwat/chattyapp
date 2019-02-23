@@ -5,7 +5,7 @@ ChattyApp has features that are similar to slack where messages can be sent and 
 
 ## Final Product
 
-![Welcome](/screenshot/chatty.png)
+![Welcome](/screenshot/chattyv2.png)
 
 ## Dependencies
 - React
